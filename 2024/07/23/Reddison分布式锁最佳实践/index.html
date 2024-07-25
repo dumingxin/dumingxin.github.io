@@ -17,18 +17,18 @@
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   
-  <title>Reddison分布式锁最佳实践 - 杜明欣的博客</title>
+  <title>Redisson分布式锁最佳实践 - 杜明欣的博客</title>
 
   
-    <meta name="description" content="前言最近在使用Reddison分布式锁时遇到一个问题，代码大致如下 1java 但实际上线发布之后提示锁释放失败，仔细排查日志才发现原来是并发场景下由于获取锁失败则直接执行到finllay中的unlock方法，但是reddison在释放锁时会校验当前线程是否持有锁，如果当前线程没有持有锁调用unlock方法时就会抛异常。正确的释放锁方式是先判断当前线程是否持有锁，然后再进行释放，正确的姿势如下 1">
+    <meta name="description" content="前言最近在使用Redisson分布式锁时遇到一个问题，代码大致如下 1234567891011121314151617public void test() &#123;    String key &#x3D; &quot;xxxx&quot;;    RLock lock &#x3D; null;    try &#123;        lock &#x3D; redissonClient.getLock(key);">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Reddison分布式锁最佳实践">
+<meta property="og:title" content="Redisson分布式锁最佳实践">
 <meta property="og:url" content="http://example.com/2024/07/23/Reddison%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
 <meta property="og:site_name" content="杜明欣的博客">
-<meta property="og:description" content="前言最近在使用Reddison分布式锁时遇到一个问题，代码大致如下 1java 但实际上线发布之后提示锁释放失败，仔细排查日志才发现原来是并发场景下由于获取锁失败则直接执行到finllay中的unlock方法，但是reddison在释放锁时会校验当前线程是否持有锁，如果当前线程没有持有锁调用unlock方法时就会抛异常。正确的释放锁方式是先判断当前线程是否持有锁，然后再进行释放，正确的姿势如下 1">
+<meta property="og:description" content="前言最近在使用Redisson分布式锁时遇到一个问题，代码大致如下 1234567891011121314151617public void test() &#123;    String key &#x3D; &quot;xxxx&quot;;    RLock lock &#x3D; null;    try &#123;        lock &#x3D; redissonClient.getLock(key);">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-23T15:52:27.000Z">
-<meta property="article:modified_time" content="2024-07-23T16:26:33.122Z">
+<meta property="article:modified_time" content="2024-07-25T16:37:12.910Z">
 <meta property="article:author" content="dmx">
 <meta name="twitter:card" content="summary">
   
@@ -63,7 +63,7 @@
 <div class="widgets">
 
 
-<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/07/23/Reddison%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"><span class="title">Reddison分布式锁最佳实践</span></a><a class="item title" href="/2024/05/08/ReentrantLock%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/"><span class="title">ReentrantLock原理分析</span></a></div></widget>
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/07/23/Reddison%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"><span class="title">Redisson分布式锁最佳实践</span></a><a class="item title" href="/2024/05/08/ReentrantLock%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/"><span class="title">ReentrantLock原理分析</span></a></div></widget>
 </div>
 
 </div></aside><div class="l_main" id="main">
@@ -76,28 +76,25 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-07-23T15:52:27.000Z">2024-07-23</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-23T16:26:33.122Z">2024-07-24</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-07-23T15:52:27.000Z">2024-07-23</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-25T16:37:12.910Z">2024-07-26</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>Reddison分布式锁最佳实践</span></h1>
+        <h1 class="text title"><span>Redisson分布式锁最佳实践</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在使用Reddison分布式锁时遇到一个问题，代码大致如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java</span><br></pre></td></tr></table></figure>
-<p>但实际上线发布之后提示锁释放失败，仔细排查日志才发现原来是并发场景下由于获取锁失败则直接执行到finllay中的unlock方法，但是reddison在释放锁时会校验当前线程是否持有锁，如果当前线程没有持有锁调用unlock方法时就会抛异常。<br>正确的释放锁方式是先判断当前线程是否持有锁，然后再进行释放，正确的姿势如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java</span><br></pre></td></tr></table></figure>
-<p>本着举一反三的原则我又搜一下工程中其他使用分布式锁的姿势，于是发现了下面各种姿势的代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure>
-
-<p>使用分布式锁的基本套路是先尝试获取锁，获取成功之后执行业务逻辑，最后释放锁，同时为了避免业务异常导致锁没有及时释放，整个代码要使用try&#x2F;catch&#x2F;finaly包裹起来，代码写起来非常啰嗦。所以本着让我们的代码更加优雅，我们可以进行简单的封装处理，在有场景需要使用时只需要关注，key的生成和业务逻辑处理即可，不需要关心锁的释放，参考代码如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">封装代码</span><br></pre></td></tr></table></figure>
+  </div><article class="md-text content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在使用Redisson分布式锁时遇到一个问题，代码大致如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void test() &#123;</span><br><span class="line">    String key = &quot;xxxx&quot;;</span><br><span class="line">    RLock lock = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        lock = redissonClient.getLock(key);</span><br><span class="line">        boolean locked = lock.tryLock(1, TimeUnit.SECONDS);</span><br><span class="line">        if (locked) &#123;</span><br><span class="line">            //业务逻辑</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Exception ex) &#123;</span><br><span class="line">        log.error(&quot;lock exception&quot;,ex);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        if (lock != null) &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但实际上线发布之后提示锁释放失败，错误信息为<code>attempt to unlock lock, not locked by current thread by node id</code><br>仔细排查日志才发现原来是并发场景下由于获取锁失败则直接执行到finllay中的unlock方法，但是Redisson在释放锁时会校验当前线程是否持有锁，如果当前线程没有持有锁调用unlock方法时就会抛异常。<br>正确的释放锁方式是先判断当前线程是否持有锁，然后再进行释放，正确的姿势如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void test() &#123;</span><br><span class="line">        String key = &quot;xxxx&quot;;</span><br><span class="line">        RLock lock = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            lock = redissonClient.getLock(key);</span><br><span class="line">            boolean locked = lock.tryLock(1, TimeUnit.SECONDS);</span><br><span class="line">            if (locked) &#123;</span><br><span class="line">                //业务逻辑</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Exception ex) &#123;</span><br><span class="line">            log.error(&quot;lock exception&quot;, ex);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (lock != null &amp;&amp; lock.isLocked() &amp;&amp; lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在释放之前添加对锁状态以及当前线程是否持有锁的判断，然后再进行释放。<br>使用分布式锁的基本套路是先尝试获取锁，获取成功之后执行业务逻辑，最后释放锁，同时为了避免业务异常导致锁没有及时释放，整个代码要使用try&#x2F;catch&#x2F;finaly包裹起来，代码写起来非常啰嗦。所以本着让我们的代码更加优雅，我们可以进行简单的封装处理，在有场景需要使用时只需要关注锁的粒度、等待时间和业务逻辑处理即可，不需要关心锁的获取和释放细节，参考代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Slf4j</span><br><span class="line">public class RedissonLockPlus &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private RedissonClient redissonClient;</span><br><span class="line"></span><br><span class="line">    public void tryLock(String key, Long time, TimeUnit timeUnit, Runnable lockedCallback, Runnable unLockCallback) &#123;</span><br><span class="line">        RLock lock = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            lock = redissonClient.getLock(key);</span><br><span class="line">            boolean locked = lock.tryLock(time, timeUnit);</span><br><span class="line">            if (locked) &#123;</span><br><span class="line">                if (lockedCallback != null) &#123;</span><br><span class="line">                    lockedCallback.run();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if (unLockCallback != null) &#123;</span><br><span class="line">                    unLockCallback.run();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Exception ex) &#123;</span><br><span class="line">            log.error(&quot;lock exception&quot;, ex);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (lock != null &amp;&amp; lock.isLocked() &amp;&amp; lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在实际使用时代码就会变得很清晰</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void test() &#123;</span><br><span class="line">    String key = &quot;xxxx&quot;;</span><br><span class="line">    redissonLockPlus.tryLock(key, 1L, TimeUnit.SECONDS, () -&gt; &#123;</span><br><span class="line">        //获取锁成功业务逻辑</span><br><span class="line">    &#125;, () -&gt; &#123;</span><br><span class="line">        throw new RuntimeException(&quot;获取锁失败&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>当然我们也可以自定义一个分布式锁的注解，然后通过切面进行锁的获取和释放，这种方式更优雅，但使用时要注意避免内部调用免得切面不生效，网上有类似做法，我这里就不赘述了</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文主要介绍了使用分布式锁常见的一些问题，避免大家重复踩坑。同时也提供了一种优雅的分布式锁的使用方式，希望对大家有所帮助。</p>
 
